@@ -23,30 +23,35 @@ public class NamedColor extends Color {
     public static final NamedColor light_purple = new NamedColor('d', "light_purple", 0xff55ff);
     public static final NamedColor yellow = new NamedColor('e', "yellow", 0xffff55);
     public static final NamedColor white = new NamedColor('f', "white", 0xffffff);
-    private static final Map<Character, NamedColor> LEGACIES = VALUES.stream().
-            collect(Collectors.toUnmodifiableMap(NamedColor::getLegacy, (v) -> v));
-    private static final Map<String, NamedColor> NAMES = VALUES.stream().
-            collect(Collectors.toUnmodifiableMap(NamedColor::toString, (v) -> v));
-    private static final Map<Integer, NamedColor> EXACTS = VALUES.stream().
-            collect(Collectors.toUnmodifiableMap(Color::value, (v) -> v));
-    public static NamedColor d0 = black;
-    public static NamedColor d1 = dark_blue;
-    public static NamedColor d2 = dark_green;
-    public static NamedColor d3 = dark_aqua;
-    public static NamedColor d4 = dark_red;
-    public static NamedColor d5 = dark_purple;
-    public static NamedColor d6 = gold;
-    public static NamedColor d7 = gray;
-    public static NamedColor d8 = dark_gray;
-    public static NamedColor d9 = blue;
-    public static NamedColor da = green;
-    public static NamedColor db = aqua;
-    public static NamedColor dc = red;
-    public static NamedColor dd = light_purple;
-    public static NamedColor de = yellow;
-    public static NamedColor df = white;
-    private static final List<NamedColor> VALUES = Collections.unmodifiableList(Arrays.asList(d0, d1, d2, d3, d4, d5,
+
+    public static final NamedColor d0 = black;
+    public static final NamedColor d1 = dark_blue;
+    public static final NamedColor d2 = dark_green;
+    public static final NamedColor d3 = dark_aqua;
+    public static final NamedColor d4 = dark_red;
+    public static final NamedColor d5 = dark_purple;
+    public static final NamedColor d6 = gold;
+    public static final NamedColor d7 = gray;
+    public static final NamedColor d8 = dark_gray;
+    public static final NamedColor d9 = blue;
+    public static final NamedColor da = green;
+    public static final NamedColor db = aqua;
+    public static final NamedColor dc = red;
+    public static final NamedColor dd = light_purple;
+    public static final NamedColor de = yellow;
+    public static final NamedColor df = white;
+
+
+    public static final List<NamedColor> VALUES = Collections.unmodifiableList(Arrays.asList(d0, d1, d2, d3, d4, d5,
             d6, d7, d8, d9, da, db, dc, dd, de, df));
+    public static final Map<Character, NamedColor> LEGACIES = VALUES.stream().
+            collect(Collectors.toMap(NamedColor::getLegacy, (v) -> v));
+    public static final Map<String, NamedColor> NAMES = VALUES.stream().
+            collect(Collectors.toMap(NamedColor::toString, (v) -> v));
+    public static final Map<Integer, NamedColor> EXACTS = VALUES.stream().
+            collect(Collectors.toMap(Color::value, (v) -> v));
+
+
     protected final char legacy;
     protected final String name;
 
