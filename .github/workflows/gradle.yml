@@ -28,4 +28,4 @@ jobs:
     - name: Upload a Build Artifact
       uses: actions/upload-artifact@v2.2.4
       with:
-        path: ./bukkit/libs/ChatFormat-Bukkit-all.jar
+        path: ./bukkit/build/libs/ChatFormat-Bukkit-all.jar
