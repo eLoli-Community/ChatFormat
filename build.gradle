@@ -2,6 +2,10 @@ group 'com.eloli.chatformat'
 version '1.0-SNAPSHOT'
 subprojects {
     apply plugin: 'java'
+
+    targetCompatibility = '1.8'
+    sourceCompatibility = '1.8'
+
     repositories {
         mavenCentral()
         maven { url 'https://www.jitpack.io' }

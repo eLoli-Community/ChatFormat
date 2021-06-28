@@ -35,10 +35,13 @@ public final class BukkitLoader extends JavaPlugin implements Listener, ILoader 
             throw new RuntimeException(e);
         }
         getServer().getPluginCommand("chatformat").setExecutor((sender, command, label, args) -> {
+            sender.sendMessage("[ChatFormat] reloading");
             queue.addFirst(()->{
                 try {
                     core.init();
+                    sender.sendMessage("[ChatFormat] reloaded");
                 }catch (Exception e){
+                    sender.sendMessage("[ChatFormat] failed");
                     getLogger().log(Level.WARNING,e.getMessage(),e);
                 }
             });

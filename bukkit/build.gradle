@@ -24,4 +24,7 @@ processResources {
         filter ReplaceTokens, tokens: [version: version]
     }
 }
+shadowJar{
+    baseName 'ChatFormat-Bukkit'
+}
 assemble.dependsOn(shadowJar)

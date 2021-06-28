@@ -8,7 +8,6 @@ import org.openjdk.nashorn.api.scripting.NashornScriptEngine;
 import org.openjdk.nashorn.api.scripting.NashornScriptEngineFactory;
 
 import javax.script.CompiledScript;
-import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -26,8 +25,7 @@ public class Core {
         if(!loader.getConfigPath().toFile().exists()){
             loader.getConfigPath().toFile().mkdirs();
         }
-        ScriptEngineManager scriptEngineManager = new ScriptEngineManager();
-        factory = (NashornScriptEngineFactory) scriptEngineManager.getEngineByName("js").getFactory();
+        factory = new NashornScriptEngineFactory();
     }
     public Component callOnChat(IChatEvent e) throws ScriptException, NoSuchMethodException {
         engine.put("e",e);
