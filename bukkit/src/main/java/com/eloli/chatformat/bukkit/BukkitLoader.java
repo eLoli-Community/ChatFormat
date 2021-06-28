@@ -27,6 +27,7 @@ public final class BukkitLoader extends JavaPlugin implements Listener, ILoader 
     public Thread handleThread;
     public LinkedBlockingDeque<Runnable> queue = new LinkedBlockingDeque<>();
     public Core core;
+
     @Override
     public void onEnable() {
         try {
@@ -36,51 +37,51 @@ public final class BukkitLoader extends JavaPlugin implements Listener, ILoader 
         }
         getServer().getPluginCommand("chatformat").setExecutor((sender, command, label, args) -> {
             sender.sendMessage("[ChatFormat] reloading");
-            queue.addFirst(()->{
+            queue.addFirst(() -> {
                 try {
                     core.init();
                     sender.sendMessage("[ChatFormat] reloaded");
-                }catch (Exception e){
+                } catch (Exception e) {
                     sender.sendMessage("[ChatFormat] failed");
-                    getLogger().log(Level.WARNING,e.getMessage(),e);
+                    getLogger().log(Level.WARNING, e.getMessage(), e);
                 }
             });
             return true;
         });
-        getServer().getPluginManager().registerEvents(this,this);
-        handleThread = new Thread(()->{
-            while (true){
+        getServer().getPluginManager().registerEvents(this, this);
+        handleThread = new Thread(() -> {
+            while (true) {
                 try {
                     queue.take().run();
-                }catch (Exception e){
-                    getLogger().log(Level.WARNING,e.getMessage(),e);
+                } catch (Exception e) {
+                    getLogger().log(Level.WARNING, e.getMessage(), e);
                 }
             }
         });
-        getServer().getScheduler().runTaskTimer(this,()->{
+        getServer().getScheduler().runTaskTimer(this, () -> {
             if (!handleThread.isAlive()) {
                 handleThread.start();
             }
-        },0,20);
-        queue.add(()->{
+        }, 0, 20);
+        queue.add(() -> {
             try {
                 core.init();
             } catch (ScriptException | IOException e) {
-                getLogger().log(Level.WARNING,e.getMessage(),e);
+                getLogger().log(Level.WARNING, e.getMessage(), e);
             }
         });
     }
 
-    @EventHandler(ignoreCancelled = true,priority = EventPriority.HIGHEST)
-    public void onChatBefore(AsyncPlayerChatEvent event){
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
+    public void onChatBefore(AsyncPlayerChatEvent event) {
         willHandle.add(event);
         event.setCancelled(true);
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
-    public void onChatAfter(AsyncPlayerChatEvent event){
-        if(willHandle.contains(event)){
-            queue.add(()->{
+    public void onChatAfter(AsyncPlayerChatEvent event) {
+        if (willHandle.contains(event)) {
+            queue.add(() -> {
                 for (Player recipient : event.getRecipients()) {
                     try {
                         recipient.spigot().sendMessage(
@@ -93,8 +94,8 @@ public final class BukkitLoader extends JavaPlugin implements Listener, ILoader 
                                         )
                                 ))
                         );
-                    }catch (Exception e){
-                        getLogger().log(Level.WARNING,e.getMessage(),e);
+                    } catch (Exception e) {
+                        getLogger().log(Level.WARNING, e.getMessage(), e);
                     }
                 }
             });
@@ -103,7 +104,7 @@ public final class BukkitLoader extends JavaPlugin implements Listener, ILoader 
 
     @Override
     public void onDisable() {
-        if(handleThread.isAlive()){
+        if (handleThread.isAlive()) {
             handleThread.interrupt();
         }
     }
@@ -119,7 +120,7 @@ public final class BukkitLoader extends JavaPlugin implements Listener, ILoader 
             return PlaceholderAPI.setPlaceholders(
                     ((PlayerImpl) player).getHandle(),
                     text);
-        }catch (NoClassDefFoundError e){
+        } catch (NoClassDefFoundError e) {
             getLogger().warning("No PlaceholderAPI found.");
             return text;
         }

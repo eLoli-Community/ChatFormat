@@ -1,7 +1,7 @@
 package com.eloli.chatformat;
 
-import com.eloli.chatformat.message.components.Component;
 import com.eloli.chatformat.message.IChatEvent;
+import com.eloli.chatformat.message.components.Component;
 import com.eloli.chatformat.models.ILoader;
 import com.eloli.chatformat.models.IPlayer;
 import org.openjdk.nashorn.api.scripting.NashornScriptEngine;
@@ -19,23 +19,25 @@ public class Core {
     private NashornScriptEngineFactory factory;
     private NashornScriptEngine engine;
     private ILoader loader;
-    private Map<String,CompiledScript> compiledScripts;
-    public Core(ILoader loader){
+    private Map<String, CompiledScript> compiledScripts;
+
+    public Core(ILoader loader) {
         this.loader = loader;
-        if(!loader.getConfigPath().toFile().exists()){
+        if (!loader.getConfigPath().toFile().exists()) {
             loader.getConfigPath().toFile().mkdirs();
         }
         factory = new NashornScriptEngineFactory();
     }
+
     public Component callOnChat(IChatEvent e) throws ScriptException, NoSuchMethodException {
-        engine.put("e",e);
+        engine.put("__event", e);
         return (Component) engine.invokeFunction("onChat");
     }
 
     public void init() throws ScriptException, IOException {
         compiledScripts = new HashMap<>();
         engine = (NashornScriptEngine) factory.getScriptEngine(getClass().getClassLoader());
-        engine.put("__core",this);
+        engine.put("__core", this);
         InputStream inputStream = Core.class.getResourceAsStream("/chatformat/init.js");
         InputStreamReader inputStreamReader = new InputStreamReader(inputStream, StandardCharsets.UTF_8);
         engine.eval(inputStreamReader);
@@ -47,15 +49,23 @@ public class Core {
     public Object require(String fileName) throws ScriptException, IOException {
         fileName = fileName + ".js";
         CompiledScript compiledScript = compiledScripts.get(fileName);
-        if(compiledScript == null){
-            File requireFile = loader.getConfigPath().resolve(Path.of(".",fileName.split("/"))).toFile();
-            compiledScript = engine.compile(new FileReader(requireFile, StandardCharsets.UTF_8));
-            compiledScripts.put(fileName,compiledScript);
+        if (compiledScript == null) {
+            Path p = loader.getConfigPath();
+            for (String s : fileName.split("/")) {
+                p = p.resolve(s);
+            }
+            File requireFile = p.toFile();
+            InputStream inputStream = new FileInputStream(requireFile);
+            Reader reader = new InputStreamReader(inputStream, StandardCharsets.UTF_8);
+            compiledScript = engine.compile(reader);
+            reader.close();
+            inputStream.close();
+            compiledScripts.put(fileName, compiledScript);
         }
         return compiledScript.eval();
     }
 
-    public String apply(IPlayer player, String text){
+    public String apply(IPlayer player, String text) {
         return loader.replace(player, text);
     }
-   }
+}

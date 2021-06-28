@@ -1,6 +1,6 @@
 import org.apache.tools.ant.filters.ReplaceTokens
 
-plugins{
+plugins {
     id 'com.github.johnrengelman.shadow' version '5.2.0'
 }
 
@@ -24,7 +24,7 @@ processResources {
         filter ReplaceTokens, tokens: [version: version]
     }
 }
-shadowJar{
+shadowJar {
     baseName 'ChatFormat-Bukkit'
 }
 assemble.dependsOn(shadowJar)

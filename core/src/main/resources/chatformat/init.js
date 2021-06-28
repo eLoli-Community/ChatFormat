@@ -1,21 +1,26 @@
-function require(a){
+function require(a) {
     return __core.require(a);
 }
-function apply(a,b){
-    return __core.apply(a,b);
+
+function apply(a, b) {
+    return __core.apply(a, b);
+}
+
+function e() {
+    return __event;
 }
 
 var __color = Java.type("com.eloli.chatformat.message.models.Color");
 var __namedcolor = Java.type("com.eloli.chatformat.message.models.NamedColor");
 
 var Color = {};
-Color.fromValue = function (value){
+Color.fromValue = function (value) {
     return __color.fromValue(value);
 }
-Color.fromRgb = function (r,g,b){
-    return __color.fromRgb(r,g,b);
+Color.fromRgb = function (r, g, b) {
+    return __color.fromRgb(r, g, b);
 }
-Color.fromHex = function (hex){
+Color.fromHex = function (hex) {
     return __color.fromHex(hex);
 }
 
@@ -55,7 +60,8 @@ Color.white = __namedcolor.white;
 
 var __style = Java.type("com.eloli.chatformat.message.models.Style");
 var Style = {};
-function style(){
+
+function style() {
     return new __style();
 }
 
@@ -85,8 +91,8 @@ HoverEvent.showText = function (text) {
 HoverEvent.showItem = function (itemId) {
     return __hoverEvent.showItem(itemId);
 }
-HoverEvent.showEntity = function (id,name) {
-    return __hoverEvent.showEntity(id,name);
+HoverEvent.showEntity = function (id, name) {
+    return __hoverEvent.showEntity(id, name);
 }
 
 var __component = Java.type("com.eloli.chatformat.message.components.Component");
@@ -94,23 +100,25 @@ var components = __component.components;
 
 var __textual = Java.type("com.eloli.chatformat.message.components.Textual");
 var Textual = {};
-Textual.legacy = function (a,b){
-    if(b === undefined){
+Textual.legacy = function (a, b) {
+    if (b === undefined) {
         return __textual.legacy(a);
-    }else{
-        return __textual.legacy(a,b);
+    } else {
+        return __textual.legacy(a, b);
     }
 }
-Textual.of = function (a,b){
-    if(b === undefined){
+Textual.of = function (a, b) {
+    if (b === undefined) {
         return __textual.of(a);
-    }else{
-        return __textual.of(a,b);
+    } else {
+        return __textual.of(a, b);
     }
 }
-function text(a,b){
-    return Textual.legacy(a,b);
+
+function text(a, b) {
+    return Textual.legacy(a, b);
 }
-function plain(a,b){
-    return Textual.of(a,b);
+
+function plain(a, b) {
+    return Textual.of(a, b);
 }

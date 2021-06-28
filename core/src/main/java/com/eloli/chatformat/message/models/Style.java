@@ -19,38 +19,47 @@ public class Style {
         this.font = font;
         return this;
     }
+
     public Style color(Color color) {
         this.color = color;
         return this;
     }
+
     public Style obfuscated() {
         this.obfuscated = true;
         return this;
     }
+
     public Style bold() {
         this.bold = true;
         return this;
     }
+
     public Style strikethrough() {
         this.strikethrough = true;
         return this;
     }
+
     public Style underlined() {
         this.underlined = true;
         return this;
     }
+
     public Style italic() {
         this.italic = true;
         return this;
     }
+
     public Style clickEvent(ClickEvent clickEvent) {
         this.clickEvent = clickEvent;
         return this;
     }
+
     public Style hoverEvent(HoverEvent hoverEvent) {
         this.hoverEvent = hoverEvent;
         return this;
     }
+
     public Style insertion(String insertion) {
         this.insertion = insertion;
         return this;

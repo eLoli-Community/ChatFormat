@@ -4,5 +4,6 @@ import java.nio.file.Path;
 
 public interface ILoader {
     Path getConfigPath();
+
     String replace(IPlayer player, String text);
 }

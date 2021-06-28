@@ -7,7 +7,7 @@ public class PlayerImpl implements IPlayer {
 
     public Player player;
 
-    public PlayerImpl(Player player){
+    public PlayerImpl(Player player) {
         this.player = player;
     }
 
@@ -31,7 +31,7 @@ public class PlayerImpl implements IPlayer {
         return player.hasPermission(permission);
     }
 
-    public Player getHandle(){
+    public Player getHandle() {
         return player;
     }
 }
