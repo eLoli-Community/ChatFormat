@@ -4,8 +4,8 @@ import com.eloli.chatformat.message.components.Component;
 import com.eloli.chatformat.message.IChatEvent;
 import com.eloli.chatformat.models.ILoader;
 import com.eloli.chatformat.models.IPlayer;
-import jdk.nashorn.api.scripting.NashornScriptEngine;
-import jdk.nashorn.api.scripting.NashornScriptEngineFactory;
+import org.openjdk.nashorn.api.scripting.NashornScriptEngine;
+import org.openjdk.nashorn.api.scripting.NashornScriptEngineFactory;
 
 import javax.script.CompiledScript;
 import javax.script.ScriptEngineManager;
