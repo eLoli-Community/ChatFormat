@@ -1,0 +1,8 @@
+name: ChatFormat
+version: @version@
+main: com.eloli.chatformat.bukkit.BukkitLoader
+softdepend: [ PlaceholderAPI ]
+authors: [ InkerBot ]
+commands:
+  chatformat:
+    permission: chatformat.reload

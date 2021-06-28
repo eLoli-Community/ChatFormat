@@ -1,0 +1,3 @@
+rootProject.name = 'ChatFormat'
+include 'core'
+include 'bukkit'

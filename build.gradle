@@ -1,0 +1,13 @@
+group 'com.eloli.chatformat'
+version '1.0-SNAPSHOT'
+subprojects {
+    apply plugin: 'java'
+    repositories {
+        mavenCentral()
+        maven { url 'https://www.jitpack.io' }
+        maven {
+            name = 'sonatype'
+            url = 'https://oss.sonatype.org/content/groups/public/'
+        }
+    }
+}
