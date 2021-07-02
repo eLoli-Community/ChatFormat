@@ -14,4 +14,7 @@ subprojects {
             url = 'https://oss.sonatype.org/content/groups/public/'
         }
     }
+    dependencies {
+        implementation 'com.github.eLoli-Community.SodionCore:SodionCore-Base:c47a149116'
+    }
 }

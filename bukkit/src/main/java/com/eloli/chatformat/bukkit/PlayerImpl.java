@@ -27,6 +27,11 @@ public class PlayerImpl implements IPlayer {
     }
 
     @Override
+    public String getLocation() {
+        return player.getWorld().getName();
+    }
+
+    @Override
     public boolean hasPermission(String permission) {
         return player.hasPermission(permission);
     }

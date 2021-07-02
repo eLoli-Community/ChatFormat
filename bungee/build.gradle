@@ -1,0 +1,22 @@
+import org.apache.tools.ant.filters.ReplaceTokens
+
+plugins {
+    id 'com.github.johnrengelman.shadow' version '5.2.0'
+}
+
+dependencies {
+    compile project(':core')
+    compileOnly 'net.md-5:bungeecord-api:1.16-R0.5-SNAPSHOT'
+}
+
+processResources {
+    from(sourceSets.main.resources.srcDirs) {
+        filter ReplaceTokens, tokens: [version: version]
+    }
+}
+
+shadowJar {
+    baseName 'ChatFormat-Bungee'
+}
+
+assemble.dependsOn(shadowJar)

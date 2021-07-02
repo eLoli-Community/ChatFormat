@@ -29,3 +29,7 @@ jobs:
       uses: actions/upload-artifact@v2.2.4
       with:
         path: ./bukkit/build/libs/ChatFormat-Bukkit-all.jar
+    - name: Upload a Build Artifact
+      uses: actions/upload-artifact@v2.2.4
+      with:
+        path: ./bungee/build/libs/ChatFormat-Bungee-all.jar

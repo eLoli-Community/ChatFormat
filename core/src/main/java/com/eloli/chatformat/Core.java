@@ -1,9 +1,13 @@
 package com.eloli.chatformat;
 
+import com.eloli.chatformat.channel.ChatPackage;
+import com.eloli.chatformat.channel.ReloadPackage;
 import com.eloli.chatformat.message.IChatEvent;
 import com.eloli.chatformat.message.components.Component;
 import com.eloli.chatformat.models.ILoader;
 import com.eloli.chatformat.models.IPlayer;
+import com.eloli.sodioncore.channel.MessageChannel;
+import com.eloli.sodioncore.channel.util.ByteUtil;
 import org.openjdk.nashorn.api.scripting.NashornScriptEngine;
 import org.openjdk.nashorn.api.scripting.NashornScriptEngineFactory;
 
@@ -20,6 +24,7 @@ public class Core {
     private NashornScriptEngine engine;
     private ILoader loader;
     private Map<String, CompiledScript> compiledScripts;
+    private MessageChannel channel;
 
     public Core(ILoader loader) {
         this.loader = loader;
@@ -27,11 +32,22 @@ public class Core {
             loader.getConfigPath().toFile().mkdirs();
         }
         factory = new NashornScriptEngineFactory();
+        channel = new MessageChannel("chatformat:event", ByteUtil.sha256(new byte[0]),ByteUtil.sha256(new byte[0]));
+        channel.registerServerPacket(ChatPackage.class)
+                .registerClientPacket(ReloadPackage.class);
     }
 
     public Component callOnChat(IChatEvent e) throws ScriptException, NoSuchMethodException {
         engine.put("__event", e);
         return (Component) engine.invokeFunction("onChat");
+    }
+
+    public MessageChannel getChannel(){
+        return channel;
+    }
+
+    public ILoader getLoader(){
+        return loader;
     }
 
     public void init() throws ScriptException, IOException {

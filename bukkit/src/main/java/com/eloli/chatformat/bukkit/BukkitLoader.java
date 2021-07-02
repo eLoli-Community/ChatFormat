@@ -1,9 +1,13 @@
 package com.eloli.chatformat.bukkit;
 
 import com.eloli.chatformat.Core;
+import com.eloli.chatformat.channel.ChatPackage;
+import com.eloli.chatformat.channel.ReloadPackage;
 import com.eloli.chatformat.message.IChatEvent;
 import com.eloli.chatformat.models.ILoader;
 import com.eloli.chatformat.models.IPlayer;
+import com.eloli.sodioncore.channel.BadSignException;
+import com.eloli.sodioncore.channel.ClientPacket;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.md_5.bungee.api.ChatMessageType;
 import org.bukkit.entity.Player;
@@ -12,6 +16,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.plugin.messaging.PluginMessageListener;
 
 import javax.script.ScriptException;
 import java.io.IOException;
@@ -35,7 +40,39 @@ public final class BukkitLoader extends JavaPlugin implements Listener, ILoader 
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+
+        getServer().getMessenger().registerIncomingPluginChannel(this, core.getChannel().name, (channel, player, message) -> {
+            if(channel.equals(core.getChannel().name)){
+                try {
+                    ClientPacket packet = core.getChannel().getClientFactory(message).parser(message);
+                    if(packet instanceof ReloadPackage){
+                        if (!player.hasPermission("chatformat.reload")) {
+                            player.sendMessage("[ChatFormat] permission denied.");
+                            return;
+                        }
+                        player.sendMessage("[ChatFormat] reloading");
+                        queue.addFirst(() -> {
+                            try {
+                                core.init();
+                                player.sendMessage("[ChatFormat] reloaded");
+                            } catch (Exception e) {
+                                player.sendMessage("[ChatFormat] failed");
+                                getLogger().log(Level.WARNING, e.getMessage(), e);
+                            }
+                        });
+                    }
+                } catch (BadSignException e) {
+                    getLogger().log(Level.WARNING, e.getMessage(), e);
+                }
+            }
+        });
+        getServer().getMessenger().registerOutgoingPluginChannel(this,core.getChannel().name);
+
         getServer().getPluginCommand("chatformat").setExecutor((sender, command, label, args) -> {
+            if (!sender.hasPermission("chatformat.reload")) {
+                sender.sendMessage("[ChatFormat] permission denied.");
+                return true;
+            }
             sender.sendMessage("[ChatFormat] reloading");
             queue.addFirst(() -> {
                 try {
@@ -53,6 +90,8 @@ public final class BukkitLoader extends JavaPlugin implements Listener, ILoader 
             while (true) {
                 try {
                     queue.take().run();
+                }catch (InterruptedException ignore){
+                    //
                 } catch (Exception e) {
                     getLogger().log(Level.WARNING, e.getMessage(), e);
                 }
@@ -81,6 +120,11 @@ public final class BukkitLoader extends JavaPlugin implements Listener, ILoader 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onChatAfter(AsyncPlayerChatEvent event) {
         if (willHandle.contains(event)) {
+            event.getPlayer().sendPluginMessage(this,core.getChannel().name,
+                    core.getChannel().getServerFactory(ChatPackage.class).encode(
+                            new ChatPackage(new PlayerImpl(event.getPlayer()),
+                                    event.getMessage())
+                    ));
             queue.add(() -> {
                 for (Player recipient : event.getRecipients()) {
                     try {
@@ -124,5 +168,10 @@ public final class BukkitLoader extends JavaPlugin implements Listener, ILoader 
             getLogger().warning("No PlaceholderAPI found.");
             return text;
         }
+    }
+
+    @Override
+    public boolean isBungee() {
+        return false;
     }
 }

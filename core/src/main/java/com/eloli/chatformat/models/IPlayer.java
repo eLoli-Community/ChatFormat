@@ -7,5 +7,7 @@ public interface IPlayer {
 
     String getDisplayName();
 
+    String getLocation();
+
     boolean hasPermission(String permission);
 }

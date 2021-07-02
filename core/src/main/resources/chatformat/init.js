@@ -10,6 +10,10 @@ function e() {
     return __event;
 }
 
+function isBungee(){
+    return __core.getLoader().isBungee();
+}
+
 var __color = Java.type("com.eloli.chatformat.message.models.Color");
 var __namedcolor = Java.type("com.eloli.chatformat.message.models.NamedColor");
 

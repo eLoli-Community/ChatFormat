@@ -1,3 +1,5 @@
 rootProject.name = 'ChatFormat'
 include 'core'
 include 'bukkit'
+include 'bungee'
+
