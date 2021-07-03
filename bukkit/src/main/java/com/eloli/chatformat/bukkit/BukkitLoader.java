@@ -15,6 +15,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.plugin.messaging.PluginMessageListener;
 
@@ -28,6 +29,7 @@ import java.util.logging.Level;
 
 public final class BukkitLoader extends JavaPlugin implements Listener, ILoader {
 
+    public static BukkitLoader instance;
     public Set<AsyncPlayerChatEvent> willHandle = new HashSet<>();
     public Thread handleThread;
     public LinkedBlockingDeque<Runnable> queue = new LinkedBlockingDeque<>();
@@ -35,6 +37,7 @@ public final class BukkitLoader extends JavaPlugin implements Listener, ILoader 
 
     @Override
     public void onEnable() {
+        instance = this;
         try {
             this.core = new Core(this);
         } catch (Exception e) {
@@ -173,5 +176,11 @@ public final class BukkitLoader extends JavaPlugin implements Listener, ILoader 
     @Override
     public boolean isBungee() {
         return false;
+    }
+
+    @Override
+    public IPlayer getPlayer(String name) {
+        Player player = getServer().getPlayerExact(name);
+        return player == null ? null : new PlayerImpl(player);
     }
 }

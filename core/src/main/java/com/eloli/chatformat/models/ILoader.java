@@ -8,4 +8,6 @@ public interface ILoader {
     String replace(IPlayer player, String text);
 
     boolean isBungee();
+
+    IPlayer getPlayer(String name);
 }

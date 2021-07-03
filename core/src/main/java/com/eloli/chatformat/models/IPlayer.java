@@ -10,4 +10,6 @@ public interface IPlayer {
     String getLocation();
 
     boolean hasPermission(String permission);
+
+    void notice();
 }

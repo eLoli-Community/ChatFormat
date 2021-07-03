@@ -6,12 +6,13 @@ function apply(a, b) {
     return __core.apply(a, b);
 }
 
-function e() {
-    return __event;
-}
-
 function isBungee(){
     return __core.getLoader().isBungee();
+}
+
+
+function getPlayer(a){
+    return __core.getLoader().getPlayer(a);
 }
 
 var __color = Java.type("com.eloli.chatformat.message.models.Color");

@@ -38,7 +38,7 @@ public class Core {
     }
 
     public Component callOnChat(IChatEvent e) throws ScriptException, NoSuchMethodException {
-        engine.put("__event", e);
+        engine.put("e", e);
         return (Component) engine.invokeFunction("onChat");
     }
 

@@ -1,6 +1,8 @@
 package com.eloli.chatformat.bukkit;
 
 import com.eloli.chatformat.models.IPlayer;
+import org.bukkit.Bukkit;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 
 public class PlayerImpl implements IPlayer {
@@ -34,6 +36,13 @@ public class PlayerImpl implements IPlayer {
     @Override
     public boolean hasPermission(String permission) {
         return player.hasPermission(permission);
+    }
+
+    @Override
+    public void notice() {
+        Bukkit.getScheduler().runTask(BukkitLoader.instance,()->{
+            player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_DESTROY, 500.0f, 1.0f);
+        });
     }
 
     public Player getHandle() {

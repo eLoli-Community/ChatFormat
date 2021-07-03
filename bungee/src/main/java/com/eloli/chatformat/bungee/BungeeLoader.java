@@ -109,7 +109,7 @@ public class BungeeLoader extends Plugin implements ILoader, Listener {
                     queue.add(() -> {
                         for (ProxiedPlayer recipient : getProxy().getPlayers()) {
                             if (recipient.getServer().equals(event.getSender())) {
-                                // continue;
+                                continue;
                             }
                             try {
                                 Component component = core.callOnChat(
@@ -143,5 +143,11 @@ public class BungeeLoader extends Plugin implements ILoader, Listener {
     @Override
     public boolean isBungee() {
         return true;
+    }
+
+    @Override
+    public IPlayer getPlayer(String name) {
+        ProxiedPlayer player = getProxy().getPlayer(name);
+        return player == null ? null : new PlayerImpl(player);
     }
 }
