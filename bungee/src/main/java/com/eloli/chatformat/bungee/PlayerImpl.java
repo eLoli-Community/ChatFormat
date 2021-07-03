@@ -34,4 +34,9 @@ public class PlayerImpl implements IPlayer {
     public boolean hasPermission(String permission) {
         return handle.hasPermission(permission);
     }
+
+    @Override
+    public void notice() {
+        //
+    }
 }
